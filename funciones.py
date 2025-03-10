@@ -1,5 +1,9 @@
 from random import choice
 
+dinero_panel={"jugador1":0,"jugador2":0,"jugador3":0} #dinero que llevas en el panel
+#si no resuelves no te llevas el dinero
+dinero_total={"jugador1":0,"jugador2":0,"jugador3":0} #dinero acumulado al acabar el panel
+
 def bancarrota():
     print("Pierdes todo tu dinero!")
 
@@ -18,10 +22,6 @@ def tiro_resultado():
         pasa_el_turno()
     else:
         return tirar_de_la_ruleta()
-
-
-def jugadores(jugador1,jugador2,jugador3):
-    jugador1
     
 def turno():
     tirar_de_la_ruleta()
