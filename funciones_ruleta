@@ -1,0 +1,90 @@
+from random import choice
+
+dinero_panel={"jugador1":0,"jugador2":0,"jugador3":0} #dinero que llevas en el panel
+#si no resuelves no te llevas el dinero
+dinero_total={"jugador1":0,"jugador2":0,"jugador3":0} #dinero acumulado al acabar el panel
+turno="jugador1"
+
+def leer_frase():
+    fich= open("La_ruleta_de_la_suerte.txt")
+    frase= fich.read()
+    return frase
+    
+def frase_a_resolver():
+    frase= leer_frase()
+    frase_oculta=""
+    for i in frase:
+        if i==" ":
+            frase_oculta+=" "
+        else:
+            frase_oculta+="*"
+    return frase_oculta
+    
+
+def bancarrota():
+    print("¡Pierdes todo tu dinero!")
+    dinero_panel[turno]=0
+
+def pasa_el_turno():
+    print("¡Pasas el turno!")
+    global turno
+    if turno=="jugador1":
+        turno="jugador2"
+    elif turno=="jugador2":
+        turno="jugador3"
+    elif turno=="jugador3":
+        turno="jugador1"
+    
+def x2():
+    print("¡¡¡Doble!!!")
+    dinero_panel[turno]= dinero_panel[turno]*2
+
+def tirar_de_la_ruleta():
+    gajos= ["0","25","50","75","100","150","200","300","bancarrota","pasa_el_turno","doble"]
+    resultado=choice(gajos)
+    return resultado
+
+def sumar_dinero(dinero):
+    dinero_panel[turno]=dinero_panel[turno]+ int(dinero)
+
+def tiro_resultado():
+    resultado= tirar_de_la_ruleta()
+    if resultado=="bancarrota":
+        bancarrota()
+    elif resultado=="pasa_el_turno":
+        pasa_el_turno()
+    elif resultado=="doble":
+        x2()
+    else:
+        dinero= resultado
+        sumar_dinero(dinero)
+
+def resolver(letra, frase):
+    frase_oculta=""
+    for i in frase:
+        if letra not in frase:
+            pasa_el_turno()
+            return "¡Has fallado!"
+        elif i==letra:
+            frase_oculta+= letra
+        elif i==" ":
+            frase_oculta+=" "
+        else:
+            frase_oculta+="*"
+    return frase_oculta
+
+def turno_jugador():
+    tiro_resultado()
+    
+    
+
+def main():
+    print("")
+    frase= leer_frase()
+    frase_oculta= frase_a_resolver()
+    turno_jugador()
+    letra= input("Dime una letra consonante: ")
+    resolver(letra,frase)
+    if resolver(letra,frase)!="¡Has fallado!":
+        frase_oculta=resolver(letra,frase)
+    print(frase_oculta)
